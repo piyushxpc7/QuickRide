@@ -35,7 +35,7 @@ exports.login = catchAsync(async (req, res) => {
     });
   }
 
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }).select("+password");
 
   if (!user) {
     return res.status(401).json({
@@ -57,7 +57,7 @@ exports.login = catchAsync(async (req, res) => {
   // Send the token to the user in a cookie
   res.cookie("token", token, {
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days expiration
-    secure: process.env.NODE_ENV === 'production', // Only use HTTPS in production
+    secure: process.env.NODE_ENV === "production", // Only use HTTPS in production
     httpOnly: true,
   });
 
@@ -77,3 +77,45 @@ exports.logout = (req, res) => {
     message: "User logged out",
   });
 };
+
+// profile controller
+exports.profile = catchAsync(async (req, res) => {
+  const user = await User.findById(req.userId);
+  if (!user) {
+    return res.status(404).json({
+      status: "fail",
+      message: "User not found",
+    });
+  }
+  res.status(200).json({
+    status: "success",
+    data: {
+      user,
+    },
+  });
+});
+
+// update profile controller
+exports.updateProfile = catchAsync(async (req, res) => {
+  const { username, email, password } = req.body;
+  const user = await User.findById(req.userId)
+  
+
+  if (!user) {
+    return res.status(404).json({
+      status: "fail",
+      message: "User not found",
+    });
+  }
+  if (username) user.username = username;
+  if (email) user.email = email;
+  if (password) user.password = password;
+  await user.save({ validateBeforeSave: true });
+  res.status(200).json({
+    status: "success",
+    message: "User updated successfully",
+    data: {
+      user,
+    },
+  });
+});
