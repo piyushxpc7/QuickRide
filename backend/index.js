@@ -8,17 +8,18 @@ const DB = process.env.DATABASE.replace(
   process.env.DATABASE_PASSWORD
 );
 
-mongoose
-  .connect(DB, {
-    useNewUrlParser: true, // Ensures the URL parser is using the new method (no longer required in Mongoose 6)
-    useUnifiedTopology: true, // Ensures the connection uses the new unified topology engine
-  })
-  .then((con) => {
-    console.log("DB connection successful");
-  })
-  .catch((err) => {
-    console.error("Error connecting to MongoDB:", err);
-  });
+const connectDB = async () => {
+  try {
+    await mongoose.connect(DB);
+    console.log('✅ MongoDB connected successfully');
+  } catch (err) {
+    console.error('❌ MongoDB connection error:', err);
+    process.exit(1); // Exit the process if connection fails
+  }
+};
+
+// Call the function to connect
+connectDB();
 
 process.on("uncaughtException", (err) => {
   console.log("UNCAUGHT EXCEPTION ���� terminating server..");
