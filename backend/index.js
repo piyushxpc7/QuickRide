@@ -1,16 +1,5 @@
-const express = require("express");
-const dotenv = require("dotenv");
 const mongoose = require("mongoose");
-const router = require("./routes/userRoutes");
-const app = express();
-app.use(express.json());
-dotenv.config();
-
-process.on("uncaughtException", (err) => {
-  console.log("UNCAUGHT EXCEPTION ���� terminating server..");
-  console.log(err.name, err.message);
-  process.exit(1);
-});
+const app = require("./app");
 
 const port = process.env.PORT || 5000;
 
@@ -31,13 +20,13 @@ mongoose
     console.error("Error connecting to MongoDB:", err);
   });
 
-app.get("/", (req, res) => {
-  res.json("Hello World");
+process.on("uncaughtException", (err) => {
+  console.log("UNCAUGHT EXCEPTION ���� terminating server..");
+  console.log(err.name, err.message);
+  process.exit(1);
 });
 
-app.use("/api/v1/users", router);
-
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
