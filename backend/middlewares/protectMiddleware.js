@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const appError = require("../utils/appError");
-const verifyToken = (req, res, next) => {
+module.exports = (req, res, next) => {
+  console.log(req.cookies);
   const token = req.cookies.token;
 
   if (!token) {
@@ -15,5 +16,3 @@ const verifyToken = (req, res, next) => {
     return next(new appError("Invalid token. Please log in again.", 401));
   }
 };
-
-module.exports = verifyToken;

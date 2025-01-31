@@ -1,12 +1,15 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const cookieParser = require("cookie-parser");
 const AppError = require("./utils/appError");
 const router = require("./routes/userRoutes");
 const globalErrorHandler = require("./controllers/errorController");
 
+dotenv.config();
 const app = express();
 app.use(express.json());
-dotenv.config();
+app.use(express.urlencoded({ extended: true }))
+app.use(cookieParser());
 
 
 
