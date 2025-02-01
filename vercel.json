@@ -1,0 +1,21 @@
+{
+    "rewrites": [
+      {
+        "source": "/api/:path*",  
+        "destination": "/backend/:path*"  
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",  
+        "dest": "/frontend/index.html"  
+      }
+    ],
+    "crons": [
+    {
+      "path": "/api/cron",
+      "schedule": "*/30 * * * *" 
+    }
+  ]
+  }
+  

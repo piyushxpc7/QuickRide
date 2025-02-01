@@ -12,7 +12,7 @@ exports.register = catchAsync(async (req, res, next) => {
   // Send the token to the user in a cookie
   res.cookie("token", token, {
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days expiration
-    secure: true,
+    secure: process.env.NODE_ENV === "production", // Only use HTTPS in production
     httpOnly: true,
   });
 
@@ -114,8 +114,5 @@ exports.updateProfile = catchAsync(async (req, res) => {
   res.status(200).json({
     status: "success",
     message: "User updated successfully",
-    data: {
-      user,
-    },
   });
 });

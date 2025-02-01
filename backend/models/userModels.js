@@ -36,7 +36,7 @@ userSchema.pre("save", async function (next) {
   // Hash the password before saving the user model
   if (!this.isModified("password")) {
     next();
-  }
+  } 
 
   this.password = await bcrypt.hash(this.password, 12);
   next();
