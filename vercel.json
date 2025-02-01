@@ -13,7 +13,7 @@
     ],
     "crons": [
     {
-      "path": "/api/cron",
+      "path": "/backend/cron",
       "schedule": "0 0 * * *" 
     }
   ]
