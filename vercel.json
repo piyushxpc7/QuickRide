@@ -1,15 +1,32 @@
 {
-    "rewrites": [
+    "version": 2,
+    "builds": [
       {
-        "source": "/api/:path*",
-        "destination": "/backend/:path*"
+        "src": "frontend/package.json",
+        "use": "@vercel/static-build",
+        "config": {
+          "distDir": "build"
+        }
+      },
+      {
+        "src": "backend/index.js",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/api/(.*)",
+        "dest": "/backend/$1"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "/frontend/$1"
       }
     ],
     "crons": [
       {
-        "path": "/backend/cron",  
-        "schedule": "0 0 * * *"      
+        "path": "/backend/cron",
+        "schedule": "0 0 * * *"
       }
     ]
   }
-  
