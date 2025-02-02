@@ -66,5 +66,4 @@ rideSchema.pre("save", function (next) {
 });
 
 const Ride = mongoose.model("Ride", rideSchema);
-
 module.exports = Ride;

@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const AppError = require("./utils/appError");
 const userRouter = require("./routes/userRoutes");
 const ridesRouter = require("./routes/ridesRoutes");
+const bookingRouter = require("./routes/bookingsRoutes");
 const globalErrorHandler = require("./controllers/errorController");
 
 dotenv.config();
@@ -17,6 +18,7 @@ app.use(cookieParser());
 
 app.use("/api/users", userRouter);
 app.use('/api/rides', ridesRouter)
+app.use('/api/bookings', bookingRouter)
 
 app.all('*',(req , res,next)=>{
     const err = new AppError(`Can't find ${req.originalUrl} on this server`,404);
