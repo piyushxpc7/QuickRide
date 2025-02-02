@@ -97,7 +97,7 @@ exports.profile = catchAsync(async (req, res) => {
 
 // update profile controller
 exports.updateProfile = catchAsync(async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email } = req.body;
   const user = await User.findById(req.userId)
   
 
@@ -109,10 +109,12 @@ exports.updateProfile = catchAsync(async (req, res) => {
   }
   if (username) user.username = username;
   if (email) user.email = email;
-  if (password) user.password = password;
   await user.save({ validateBeforeSave: true });
   res.status(200).json({
     status: "success",
     message: "User updated successfully",
   });
 });
+
+
+// todo: add update password controller and email confimation

@@ -9,7 +9,6 @@ const rideSchema = new mongoose.Schema(
     plateNumber: {
       type: String,
       required: [true, "Please provide a plate number"],
-      unique: true,
       minlength: 7,
     },
     route: {
@@ -38,7 +37,17 @@ const rideSchema = new mongoose.Schema(
       type: Date,
       required: [true, "Please provide a schedule"],
     }, // date and time of bus departure
-    status: { type: String, enum: ['active', 'canceled' , 'completed'], default: 'active' },
+    status: {
+      type: String,
+      enum: ["active", "canceled", "completed"],
+      default: "active",
+    },
+    parkingAddress: { type: String, required: true }, // Street address or number and name of the parking lot or garage
+    arrivalAddress: { type: String, required: true }, // Street address or number and name of the arrival location
+    parkingCoordinates: {
+      latitude: { type: Number },
+      longitude: { type: Number },
+    },
   },
   {
     timestamps: true,
@@ -50,10 +59,11 @@ rideSchema.pre("save", function (next) {
   if (this.availableSeats > this.totalSeats) {
     this.availableSeats = this.totalSeats; // ✅ Auto-fix invalid values
   }
+
+  this.route.from = this.route.from.trim().toUpperCase();
+  this.route.to = this.route.to.trim().toUpperCase();
   next();
 });
-
-
 
 const Ride = mongoose.model("Ride", rideSchema);
 
